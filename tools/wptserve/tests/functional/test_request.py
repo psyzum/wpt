@@ -138,7 +138,7 @@ class TestAuth(TestUsingServer):
     def test_auth(self):
         @wptserve.handlers.handler
         def handler(request, response):
-            return " ".join((request.auth.username, request.auth.password))
+            return b" ".join((request.auth.username, request.auth.password))
 
         route = ("GET", "/test/test_auth", handler)
         self.server.router.register(*route)
