@@ -377,8 +377,8 @@ class RequestHeaders(dict):
     """Read-only dictionary-like API for accessing request headers.
 
     Unlike BaseHTTPRequestHandler.headers, this class always returns all
-    headers with the same name (separated by commas). Besides, this class
-    ensures all keys (i.e. names of headers) and values have binary type.
+    headers with the same name (separated by commas). And it ensures all keys
+    (i.e. names of headers) and values have binary type.
     """
     def __init__(self, items):
         for header in items.keys():

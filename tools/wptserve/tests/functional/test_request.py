@@ -142,6 +142,12 @@ class TestAuth(TestUsingServer):
 
         route = ("GET", "/test/test_auth", handler)
         self.server.router.register(*route)
-        resp = self.request(route[1], auth=("test", "PASS"))
+
+        resp = self.request(route[1], auth=(b"test", b"PASS"))
         self.assertEqual(200, resp.getcode())
         self.assertEqual([b"test", b"PASS"], resp.read().split(b" "))
+
+        encoded_text = u"どうも".encode("shift-jis")
+        resp = self.request(route[1], auth=(encoded_text, encoded_text))
+        self.assertEqual(200, resp.getcode())
+        self.assertEqual([encoded_text, encoded_text], resp.read().split(b" "))
