@@ -38,14 +38,26 @@ t.step(function() {
          t.done();
       }
       vid.addEventListener("timeupdate", t.step_func(testOncePlaying), false);
+      vid.defaultPlaybackRate = 0.4;
+      vid.playbackRate = 0.4;
+      vid.preload = "metadata";
       vid.srcObject = stream;
+      vid.onratechange = t.unreached_func('ratechange event must not be fired');
       vid.play();
       assert_true(!vid.seeking, "A MediaStream is not seekable");
       assert_equals(vid.seekable.length, 0, "A MediaStream is not seekable");
       assert_equals(vid.defaultPlaybackRate, 1, "playback rate is always 1");
+      vid.defaultPlaybackRate = 0.5;
+      assert_equals(vid.playbackRate, 1, "Setting defaultPlaybackRate must be ignored");
       assert_equals(vid.playbackRate, 1, "playback rate is always 1");
+      vid.playbackRate = 0.5;
+      assert_equals(vid.playbackRate, 1, "Setting playbackRate must be ignored");
       assert_equals(vid.buffered.length, 0, "A MediaStream cannot be preloaded.  Therefore, there is no buffered timeranges");
       assert_equals(vid.duration, vid.readyState == vid.HAVE_NOTHING ? NaN : Infinity, " A MediaStream does not have a pre-defined duration. ");
+      assert_equals(vid.preload, "none", "preload must always be none");
+      vid.preload = "metadata";
+      assert_equals(vid.preload, "none", "Setting preload must be ignored");
+
     }), function(error) {});
 });
 </script>
